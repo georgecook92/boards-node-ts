@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { getConnection } from 'typeorm';
 import { validate } from 'class-validator';
+import Password from '../util/Password';
 
 import UserService from '../service/UserService';
 
@@ -9,10 +10,12 @@ import {_User} from "../entity/_User";
 export class UserRouter {
     router: Router;
     userService: UserService;
+    password: Password;
 
     constructor() {
         this.router = Router();
         this.init();
+        this.password = new Password();
     }
 
     public async save(req: Request, res: Response, next: NextFunction) {
@@ -20,7 +23,7 @@ export class UserRouter {
         user.email = req.body.email;
         user.first_name = req.body.first_name;
         user.last_name = req.body.last_name;
-        user.password = req.body.password;
+        user.password = this.password.hashPassword(req.body.password + "");
 
         let errors = await validate(user);
         if(errors.length > 0) {

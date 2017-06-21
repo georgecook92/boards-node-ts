@@ -10,12 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const class_validator_1 = require("class-validator");
+const Password_1 = require("../util/Password");
 const UserService_1 = require("../service/UserService");
 const _User_1 = require("../entity/_User");
 class UserRouter {
     constructor() {
         this.router = express_1.Router();
         this.init();
+        this.password = new Password_1.default();
     }
     save(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23,7 +25,7 @@ class UserRouter {
             user.email = req.body.email;
             user.first_name = req.body.first_name;
             user.last_name = req.body.last_name;
-            user.password = req.body.password;
+            user.password = this.password.hashPassword(req.body.password + "");
             let errors = yield class_validator_1.validate(user);
             if (errors.length > 0) {
                 res.status(400).json({ "error": "validation-error", "detail": errors });

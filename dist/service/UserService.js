@@ -16,7 +16,6 @@ class UserService {
             try {
                 let userRepository = yield typeorm_1.getConnection().getRepository(_User_1._User);
                 const foundUser = yield userRepository.findOne({ email: user.email });
-                console.log("foundUser", foundUser);
                 if (foundUser) {
                     throw new Error("User Exists");
                 }

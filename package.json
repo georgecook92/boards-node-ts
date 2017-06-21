@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.0",
     "@types/body-parser": "^1.16.3",
     "@types/chai": "^4.0.0",
     "@types/chai-http": "^0.0.30",
@@ -27,6 +28,7 @@
     "typescript": "^2.3.4"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
     "class-validator": "^0.7.0",
     "debug": "^2.6.8",
