@@ -9,17 +9,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
+const Password_1 = require("../util/Password");
 const _User_1 = require("../entity/_User");
 class UserService {
-    saveUser(user) {
+    register(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let userRepository = yield typeorm_1.getConnection().getRepository(_User_1._User);
+                let userRepository = yield typeorm_1.getConnection().getRepository(_User_1.default);
                 const foundUser = yield userRepository.findOne({ email: user.email });
                 if (foundUser) {
                     throw new Error("User Exists");
                 }
                 return yield userRepository.persist(user);
+            }
+            catch (e) {
+                throw new Error(e);
+            }
+        });
+    }
+    login(loginDTO) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let userRepository = yield typeorm_1.getConnection().getRepository(_User_1.default);
+                const foundUser = yield userRepository.findOne({ email: loginDTO.email });
+                console.log("foundUser", foundUser);
+                if (!foundUser) {
+                    throw new Error("Incorrect credentials");
+                }
+                else {
+                    const password = new Password_1.default();
+                    if (password.comparePassword(loginDTO.password, foundUser.password)) {
+                        return foundUser;
+                    }
+                    else {
+                        throw new Error("Incorrect credentials");
+                    }
+                }
             }
             catch (e) {
                 throw new Error(e);

@@ -13,20 +13,28 @@ const class_validator_1 = require("class-validator");
 const Password_1 = require("../util/Password");
 const UserService_1 = require("../service/UserService");
 const _User_1 = require("../entity/_User");
+const LoginDTO_1 = require("../DTO/LoginDTO");
 class UserRouter {
     constructor() {
         this.router = express_1.Router();
         this.init();
         this.password = new Password_1.default();
     }
-    save(req, res, next) {
+    /**
+     *
+     * @param req
+     * @param res
+     * @param next
+     * Register route
+     */
+    register(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            let user = new _User_1._User();
+            let user = new _User_1.default();
             user.email = req.body.email;
             user.first_name = req.body.first_name;
             user.last_name = req.body.last_name;
             user.password = this.password.hashPassword(req.body.password + "");
-            let errors = yield class_validator_1.validate(user);
+            const errors = yield class_validator_1.validate(user);
             if (errors.length > 0) {
                 res.status(400).json({ "error": "validation-error", "detail": errors });
             }
@@ -34,7 +42,36 @@ class UserRouter {
                 this.userService = new UserService_1.default();
                 let userResponse;
                 try {
-                    userResponse = yield this.userService.saveUser(user);
+                    userResponse = yield this.userService.register(user);
+                    res.status(200).json(userResponse);
+                }
+                catch (e) {
+                    res.status(400).json({ message: e.toString() });
+                }
+            }
+        });
+    }
+    /**
+     *
+     * @param req
+     * @param res
+     * @param next
+     * login route
+     */
+    login(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let loginDTO = new LoginDTO_1.default();
+            loginDTO.email = req.body.email;
+            loginDTO.password = req.body.password;
+            const errors = yield class_validator_1.validate(loginDTO);
+            if (errors.length > 0) {
+                res.status(400).json({ "error": "validation-error", "detail": errors });
+            }
+            else {
+                this.userService = new UserService_1.default();
+                let userResponse;
+                try {
+                    userResponse = yield this.userService.login(loginDTO);
                     res.status(200).json(userResponse);
                 }
                 catch (e) {
@@ -48,7 +85,8 @@ class UserRouter {
      * endpoints.
      */
     init() {
-        this.router.post('/', this.save.bind(this));
+        this.router.post('/register', this.register.bind(this));
+        this.router.post('/login', this.login.bind(this));
     }
 }
 exports.UserRouter = UserRouter;

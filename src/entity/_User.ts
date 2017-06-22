@@ -1,8 +1,8 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from "typeorm";
-import {validate, IsNotEmpty} from "class-validator";
+import {IsNotEmpty} from "class-validator";
 
 @Entity()
-export class _User {
+export default class _User {
     @PrimaryGeneratedColumn()
     id: number;
 

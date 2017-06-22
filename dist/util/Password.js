@@ -8,7 +8,7 @@ class Password {
     hashPassword(password) {
         return Bcrypt.hashSync(password, this.salt);
     }
-    compareSync(password, hash) {
+    comparePassword(password, hash) {
         return Bcrypt.compareSync(password, hash);
     }
 }
