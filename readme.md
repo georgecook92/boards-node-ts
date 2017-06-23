@@ -4,6 +4,7 @@ TODO:
 - middleware for jwt auth
 - cors
 - sort validation errors (make cleaner for front end to read)
+- validation of incoming requests to check they have the correct fields
 
 Things to remember
 - We are using yarn - no npm install - use yarn add instead (-D for dev dependencies)

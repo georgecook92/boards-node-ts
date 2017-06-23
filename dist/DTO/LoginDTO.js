@@ -9,43 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const typeorm_1 = require("typeorm");
 const class_validator_1 = require("class-validator");
-let _User = class _User {
-};
+class LoginDTO {
+}
 __decorate([
-    typeorm_1.PrimaryGeneratedColumn(),
-    __metadata("design:type", Number)
-], _User.prototype, "id", void 0);
-__decorate([
-    typeorm_1.Column(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
-], _User.prototype, "first_name", void 0);
+], LoginDTO.prototype, "email", void 0);
 __decorate([
-    typeorm_1.Column(),
     class_validator_1.IsNotEmpty(),
     __metadata("design:type", String)
-], _User.prototype, "last_name", void 0);
-__decorate([
-    typeorm_1.Column(),
-    class_validator_1.IsNotEmpty(),
-    __metadata("design:type", String)
-], _User.prototype, "email", void 0);
-__decorate([
-    typeorm_1.Column(),
-    class_validator_1.IsNotEmpty(),
-    __metadata("design:type", String)
-], _User.prototype, "password", void 0);
-__decorate([
-    typeorm_1.CreateDateColumn(),
-    __metadata("design:type", String)
-], _User.prototype, "createdAt", void 0);
-__decorate([
-    typeorm_1.UpdateDateColumn(),
-    __metadata("design:type", String)
-], _User.prototype, "updatedAt", void 0);
-_User = __decorate([
-    typeorm_1.Entity()
-], _User);
-exports.default = _User;
+], LoginDTO.prototype, "password", void 0);
+exports.default = LoginDTO;

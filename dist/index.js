@@ -8,14 +8,14 @@ const typeorm_1 = require("typeorm");
 typeorm_1.createConnection({
     driver: {
         type: "postgres",
-        host: "localhost",
+        host: "horton.elephantsql.com",
         port: 5432,
-        username: "georgecook",
-        password: "12345678",
-        database: "boards-dev"
+        username: "rueikvwh",
+        password: "cLiDD7a04E-68MTqU_ltH8Z7BpRWTsGM",
+        database: "rueikvwh"
     },
     entities: [
-        _User_1._User
+        _User_1.default
     ],
     autoSchemaSync: true,
 }).catch(error => console.log(error));
