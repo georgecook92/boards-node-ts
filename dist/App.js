@@ -5,6 +5,7 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 require("reflect-metadata");
 const UserRouter_1 = require("./routes/UserRouter");
+const ProtectedRouter_1 = require("./routes/ProtectedRouter");
 // Creates and configures an ExpressJS web server.
 class App {
     //Run configuration methods on the Express instance.
@@ -33,6 +34,7 @@ class App {
         });
         this.express.use('/', router);
         this.express.use('/api/user', UserRouter_1.default);
+        this.express.use('/api/protected', ProtectedRouter_1.default);
     }
 }
 exports.default = new App().express;

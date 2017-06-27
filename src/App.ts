@@ -5,6 +5,7 @@ import * as bodyParser from 'body-parser';
 import "reflect-metadata";
 
 import UserRouter from './routes/UserRouter';
+import ProtectedRouter from './routes/ProtectedRouter';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -38,8 +39,10 @@ class App {
         message: 'Hello World!'
       });
     });
+    
     this.express.use('/', router);
     this.express.use('/api/user', UserRouter);
+    this.express.use('/api/protected', ProtectedRouter);
   }
 
 }

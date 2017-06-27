@@ -38,6 +38,12 @@ __decorate([
     __metadata("design:type", String)
 ], _User.prototype, "password", void 0);
 __decorate([
+    typeorm_1.Column({
+        default: "ROLE_USER"
+    }),
+    __metadata("design:type", String)
+], _User.prototype, "role", void 0);
+__decorate([
     typeorm_1.CreateDateColumn(),
     __metadata("design:type", String)
 ], _User.prototype, "createdAt", void 0);

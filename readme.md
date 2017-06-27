@@ -1,7 +1,7 @@
 Basic typescript API for the boards app. 
 
 TODO: 
-- middleware for jwt auth
+- Maybe add a refresh token to refresh an access token after 24hrs have passed
 - cors
 - sort validation errors (make cleaner for front end to read)
 - validation of incoming requests to check they have the correct fields

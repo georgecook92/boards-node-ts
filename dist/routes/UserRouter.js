@@ -13,7 +13,7 @@ const class_validator_1 = require("class-validator");
 const Password_1 = require("../util/Password");
 const UserService_1 = require("../service/UserService");
 const _User_1 = require("../entity/_User");
-const LoginDTO_1 = require("../DTO/LoginDTO");
+const LoginRequestDTO_1 = require("../DTO/LoginRequestDTO");
 class UserRouter {
     constructor() {
         this.router = express_1.Router();
@@ -60,10 +60,10 @@ class UserRouter {
      */
     login(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            let loginDTO = new LoginDTO_1.default();
-            loginDTO.email = req.body.email;
-            loginDTO.password = req.body.password;
-            const errors = yield class_validator_1.validate(loginDTO);
+            let loginRequestDTO = new LoginRequestDTO_1.default();
+            loginRequestDTO.email = req.body.email;
+            loginRequestDTO.password = req.body.password;
+            const errors = yield class_validator_1.validate(loginRequestDTO);
             if (errors.length > 0) {
                 res.status(400).json({ "error": "validation-error", "detail": errors });
             }
@@ -71,7 +71,7 @@ class UserRouter {
                 this.userService = new UserService_1.default();
                 let userResponse;
                 try {
-                    userResponse = yield this.userService.login(loginDTO);
+                    userResponse = yield this.userService.login(loginRequestDTO);
                     res.status(200).json(userResponse);
                 }
                 catch (e) {
