@@ -1,5 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class LoginRequestDTO {
+class LoginResponseDTO {
 }
-exports.default = LoginRequestDTO;
+exports.default = LoginResponseDTO;

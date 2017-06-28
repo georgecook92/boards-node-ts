@@ -24,7 +24,6 @@ class ProtectedRouter {
      */
     protected(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('PROTECTED ROUTE');
             res.status(200).json({ message: "Hello" });
         });
     }

@@ -10,8 +10,13 @@ const middleware = (req,res,next) => {
                 return res.json({ success: false, message: 'Failed to authenticate token.' });    
             } else {
                 // if everything is good, save to request for use in other routes
-                req.decoded = decoded;    
-                next();
+                if(decoded.role === "ROLE_USER" || decoded.role === "ROLE_ADMIN") {
+                    req.decoded = decoded;    
+                    next();
+                } else {
+                    return res.json({ success: false, message: 'Incorrect role to access this resource' });  
+                } 
+                
             }
         });
     } else {

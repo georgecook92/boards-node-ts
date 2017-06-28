@@ -37,7 +37,8 @@ export default class UserService {
                 if(password.comparePassword(loginRequestDTO.password, foundUser.password)) {
                     let response: LoginResponseDTO = new LoginResponseDTO();
                     response.accessToken = jwt.sign({
-                        userId: foundUser.id
+                        userId: foundUser.id,
+                        role: foundUser.role
                     }, Config.secret, {
                         expiresIn: "24h" // expires in 24 hours
                     });
