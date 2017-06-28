@@ -1,9 +1,12 @@
 import { getConnection, Repository } from 'typeorm';
 import { validate } from 'class-validator';
+const jwt = require('jsonwebtoken');
 
+import Config from "../config/config";
 import Password from '../util/Password';
 import _User from "../entity/_User";
-import LoginDTO from '../DTO/LoginDTO';
+import LoginRequestDTO from '../DTO/LoginRequestDTO';
+import LoginResponseDTO from '../DTO/LoginResponseDTO';
 
 export default class UserService {
     public async register(user: _User) : Promise<_User> {
@@ -21,18 +24,25 @@ export default class UserService {
         }
     }
 
-    public async login(loginDTO : LoginDTO) : Promise<_User> {
+    public async login(loginRequestDTO : LoginRequestDTO) : Promise<LoginResponseDTO> {
         try {
             let userRepository = await getConnection().getRepository(_User);
-            const foundUser = await userRepository.findOne({email: loginDTO.email});
+            const foundUser = await userRepository.findOne({email: loginRequestDTO.email});
             console.log("foundUser", foundUser);
             
             if(!foundUser) {
                 throw new Error("Incorrect credentials");
             } else {
                 const password : Password = new Password();
-                if(password.comparePassword(loginDTO.password, foundUser.password)) {
-                    return foundUser;
+                if(password.comparePassword(loginRequestDTO.password, foundUser.password)) {
+                    let response: LoginResponseDTO = new LoginResponseDTO();
+                    response.accessToken = jwt.sign({
+                        userId: foundUser.id,
+                        role: foundUser.role
+                    }, Config.secret, {
+                        expiresIn: "24h" // expires in 24 hours
+                    });
+                    return response;
                 } else {
                     throw new Error("Incorrect credentials");
                 }

@@ -4,7 +4,6 @@ import * as debug from 'debug';
 import App from './App';
 
 import  _User  from "./entity/_User";
-
 import { createConnection } from "typeorm";
 
 createConnection({

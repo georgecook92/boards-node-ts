@@ -22,6 +22,11 @@ export default class _User {
     @IsNotEmpty()
     password: string;
 
+    @Column({
+        default: "ROLE_USER"
+    })
+    role: string;
+
     @CreateDateColumn()
     createdAt: string;
 

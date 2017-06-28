@@ -6,7 +6,8 @@ import Password from '../util/Password';
 import UserService from '../service/UserService';
 
 import _User from "../entity/_User";
-import LoginDTO from '../DTO/LoginDTO';
+import LoginRequestDTO from '../DTO/LoginRequestDTO';
+import LoginResponseDTO from "../DTO/LoginResponseDTO";
 
 export class UserRouter {
     router: Router;
@@ -56,18 +57,18 @@ export class UserRouter {
      * login route 
      */
     public async login(req: Request, res: Response, next: NextFunction) : Promise<void> {
-        let loginDTO = new LoginDTO();
-        loginDTO.email = req.body.email;
-        loginDTO.password = req.body.password;
+        let loginRequestDTO = new LoginRequestDTO();
+        loginRequestDTO.email = req.body.email;
+        loginRequestDTO.password = req.body.password;
 
-        const errors = await validate(loginDTO);
+        const errors = await validate(loginRequestDTO);
         if(errors.length > 0) {
             res.status(400).json({"error": "validation-error", "detail": errors});
         } else {
             this.userService = new UserService();
-            let userResponse : _User;
+            let userResponse : LoginResponseDTO;
             try {
-                userResponse = await this.userService.login(loginDTO);
+                userResponse = await this.userService.login(loginRequestDTO);
                 res.status(200).json(userResponse);
             } catch(e) {
                 res.status(400).json({message: e.toString()});
