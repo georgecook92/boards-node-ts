@@ -8,6 +8,7 @@ import UserService from '../service/UserService';
 import _User from "../entity/_User";
 import LoginRequestDTO from '../DTO/LoginRequestDTO';
 import LoginResponseDTO from "../DTO/LoginResponseDTO";
+import ErrorDTO from "../DTO/ErrorDTO";
 
 export class UserRouter {
     router: Router;
@@ -18,6 +19,23 @@ export class UserRouter {
         this.router = Router();
         this.init();
         this.password = new Password();
+    }
+
+    private createErrorArray(errors) : Array<String> {
+        let resultArray : Array<String> = [];
+        for(let i = 0; i < errors.length; i++) {
+            for(var propertyName in errors[i]) {
+                if(propertyName === "constraints") {
+                    if(errors[i].hasOwnProperty(propertyName)) {
+                        var propValue = errors[i][propertyName];
+                        Object.keys(propValue).forEach(key => {
+                            resultArray.push(propValue[key]);
+                        });
+                }
+                }
+            }
+        }
+        return resultArray;
     }
 
     /**
@@ -35,8 +53,14 @@ export class UserRouter {
         user.password = this.password.hashPassword(req.body.password + "");
 
         const errors = await validate(user);
+
+        this.createErrorArray(errors);
+
         if(errors.length > 0) {
-            res.status(400).json({"error": "validation-error", "detail": errors});
+            let errorDTO = new ErrorDTO();
+            errorDTO.errorType = "validation-error";
+            errorDTO.error = this.createErrorArray(errors);
+            res.status(400).json(errorDTO);
         } else {
             this.userService = new UserService();
             let userResponse : _User;
