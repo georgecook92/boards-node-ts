@@ -50,12 +50,9 @@ export class UserRouter {
         user.email = req.body.email;
         user.first_name = req.body.first_name;
         user.last_name = req.body.last_name;
-        user.password = this.password.hashPassword(req.body.password + "");
-
+        user.password = req.body.password;
         const errors = await validate(user);
-
-        this.createErrorArray(errors);
-
+        
         if(errors.length > 0) {
             let errorDTO = new ErrorDTO();
             errorDTO.errorType = "validation-error";
@@ -65,6 +62,8 @@ export class UserRouter {
             this.userService = new UserService();
             let userResponse : _User;
             try {
+                // hash password
+                user.password = this.password.hashPassword(req.body.password + "");
                 userResponse = await this.userService.register(user);
                 res.status(200).json(userResponse);
             } catch(e) {                    
