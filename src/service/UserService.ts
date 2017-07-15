@@ -28,7 +28,6 @@ export default class UserService {
         try {
             let userRepository = await getConnection().getRepository(_User);
             const foundUser = await userRepository.findOne({email: loginRequestDTO.email});
-            console.log("foundUser", foundUser);
             
             if(!foundUser) {
                 throw new Error("Incorrect credentials");
