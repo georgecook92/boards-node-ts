@@ -48,7 +48,7 @@ export default class UserService {
                 }
             }
         } catch(e) {
-            throw new Error(e);
+            throw e;
         }
         
 
