@@ -1,5 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from "typeorm";
-import {IsNotEmpty} from "class-validator";
+import {IsNotEmpty, IsEmail} from "class-validator";
 
 @Entity()
 export default class _User {
@@ -16,6 +16,7 @@ export default class _User {
 
     @Column()
     @IsNotEmpty()
+    @IsEmail()
     email: string;
 
     @Column()

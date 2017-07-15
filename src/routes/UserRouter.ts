@@ -1,7 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { getConnection } from 'typeorm';
 import { validate } from 'class-validator';
+
 import Password from '../util/Password';
+import {createValidationErrorArray} from '../util/ErrorProcessing';
 
 import UserService from '../service/UserService';
 
@@ -9,6 +11,7 @@ import _User from "../entity/_User";
 import LoginRequestDTO from '../DTO/LoginRequestDTO';
 import LoginResponseDTO from "../DTO/LoginResponseDTO";
 import ErrorDTO from "../DTO/ErrorDTO";
+import FieldErrorDTO from "../DTO/FieldErrorDTO";
 
 export class UserRouter {
     router: Router;
@@ -21,22 +24,7 @@ export class UserRouter {
         this.password = new Password();
     }
 
-    private createErrorArray(errors) : Array<String> {
-        let resultArray : Array<String> = [];
-        for(let i = 0; i < errors.length; i++) {
-            for(var propertyName in errors[i]) {
-                if(propertyName === "constraints") {
-                    if(errors[i].hasOwnProperty(propertyName)) {
-                        var propValue = errors[i][propertyName];
-                        Object.keys(propValue).forEach(key => {
-                            resultArray.push(propValue[key]);
-                        });
-                }
-                }
-            }
-        }
-        return resultArray;
-    }
+   
 
     /**
      * 
@@ -52,11 +40,11 @@ export class UserRouter {
         user.last_name = req.body.last_name;
         user.password = req.body.password;
         const errors = await validate(user);
-        
+
         if(errors.length > 0) {
             let errorDTO = new ErrorDTO();
             errorDTO.errorType = "validation-error";
-            errorDTO.error = this.createErrorArray(errors);
+            errorDTO.errors = createValidationErrorArray(errors);
             res.status(400).json(errorDTO);
         } else {
             this.userService = new UserService();
@@ -85,8 +73,12 @@ export class UserRouter {
         loginRequestDTO.password = req.body.password;
 
         const errors = await validate(loginRequestDTO);
+        
         if(errors.length > 0) {
-            res.status(400).json({"error": "validation-error", "detail": errors});
+            let errorDTO = new ErrorDTO();
+            errorDTO.errorType = "validation-error";
+            errorDTO.errors = createValidationErrorArray(errors);
+            res.status(400).json(errorDTO);
         } else {
             this.userService = new UserService();
             let userResponse : LoginResponseDTO;
@@ -94,7 +86,7 @@ export class UserRouter {
                 userResponse = await this.userService.login(loginRequestDTO);
                 res.status(200).json(userResponse);
             } catch(e) {
-                res.status(400).json({message: e.toString()});
+                res.status(400).json({error: e.message});
             }
             
         }
