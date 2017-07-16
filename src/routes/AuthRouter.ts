@@ -4,8 +4,9 @@ import { validate } from 'class-validator';
 
 import Password from '../util/Password';
 import {createValidationErrorArray} from '../util/ErrorProcessing';
+import ProtectedRoute from '../middleware/jwt-middleware';
 
-import UserService from '../service/UserService';
+import AuthService from '../service/AuthService';
 
 import _User from "../entity/_User";
 import LoginRequestDTO from '../DTO/LoginRequestDTO';
@@ -13,9 +14,9 @@ import LoginResponseDTO from "../DTO/LoginResponseDTO";
 import ErrorDTO from "../DTO/ErrorDTO";
 import FieldErrorDTO from "../DTO/FieldErrorDTO";
 
-export class UserRouter {
+export class AuthRouter {
     router: Router;
-    userService: UserService;
+    authService: AuthService;
     password: Password;
 
     constructor() {
@@ -47,13 +48,13 @@ export class UserRouter {
             errorDTO.errors = createValidationErrorArray(errors);
             res.status(400).json(errorDTO);
         } else {
-            this.userService = new UserService();
+            this.authService = new AuthService();
             let userResponse : _User;
             try {
                 // hash password
                 user.password = this.password.hashPassword(req.body.password + "");
-                userResponse = await this.userService.register(user);
-                res.status(200).json(userResponse);
+                userResponse = await this.authService.register(user);
+                res.status(201).json({});
             } catch(e) {                    
                 res.status(400).json({message: e.toString()});
             }
@@ -80,10 +81,10 @@ export class UserRouter {
             errorDTO.errors = createValidationErrorArray(errors);
             res.status(400).json(errorDTO);
         } else {
-            this.userService = new UserService();
+            this.authService = new AuthService();
             let userResponse : LoginResponseDTO;
             try {
-                userResponse = await this.userService.login(loginRequestDTO);
+                userResponse = await this.authService.login(loginRequestDTO);
                 res.status(200).json(userResponse);
             } catch(e) {
                 res.status(400).json({error: e.message});
@@ -102,7 +103,7 @@ export class UserRouter {
     }
 }
 
-const userRoutes = new UserRouter();
-userRoutes.init();
+const authRoutes = new AuthRouter();
+authRoutes.init();
 
-export default userRoutes.router;
+export default authRoutes.router;
