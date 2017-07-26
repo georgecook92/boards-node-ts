@@ -4,7 +4,7 @@ import { validate } from 'class-validator';
 import Password from '../util/Password';
 import ProtectedRoute from '../middleware/jwt-middleware';
 
-import UserService from '../service/UserService';
+import AuthService from '../service/AuthService';
 
 import _User from "../entity/_User";
 import LoginRequestDTO from '../DTO/LoginRequestDTO';

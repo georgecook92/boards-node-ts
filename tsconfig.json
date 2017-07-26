@@ -11,5 +11,9 @@
   ],
   "exclude": [
     "node_modules"
+  ],
+  "files": [
+    "src/typings/RequestInterface.d.ts",
+    "src/App.ts"
   ]
 }

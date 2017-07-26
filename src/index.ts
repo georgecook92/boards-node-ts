@@ -9,11 +9,11 @@ import { createConnection } from "typeorm";
 createConnection({
     driver: {
         type: "postgres",
-        host: "horton.elephantsql.com",
+        host: "localhost",
         port: 5432,
-        username: "rueikvwh",
-        password: "cLiDD7a04E-68MTqU_ltH8Z7BpRWTsGM",
-        database: "rueikvwh"
+        username: "georgecook",
+        password: "12345678",
+        database: "boards-dev"
     },
     entities: [
         _User
