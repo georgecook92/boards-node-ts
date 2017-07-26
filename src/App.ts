@@ -6,6 +6,7 @@ import * as cors from 'cors';
 import "reflect-metadata";
 
 import AuthRouter from './routes/AuthRouter';
+import UserRouter from './routes/UserRouter';
 import ProtectedRouter from './routes/ProtectedRouter';
 
 // Creates and configures an ExpressJS web server.
@@ -44,6 +45,7 @@ class App {
     
     this.express.use('/', router);
     this.express.use('/api/auth', AuthRouter);
+    this.express.use('/api/user', UserRouter);
     this.express.use('/api/protected', ProtectedRouter);
   }
 

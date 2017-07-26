@@ -8,7 +8,7 @@ import _User from "../entity/_User";
 import LoginRequestDTO from '../DTO/LoginRequestDTO';
 import LoginResponseDTO from '../DTO/LoginResponseDTO';
 
-export default class UserService {
+export default class AuthService {
     public async register(user: _User) : Promise<_User> {
         try {
             let userRepository = await getConnection().getRepository(_User);
