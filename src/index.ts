@@ -3,24 +3,6 @@ import * as debug from 'debug';
 
 import App from './App';
 
-import  _User  from "./entity/_User";
-import { createConnection } from "typeorm";
-
-createConnection({
-    driver: {
-        type: "postgres",
-        host: "localhost",
-        port: 5432,
-        username: "georgecook",
-        password: "12345678",
-        database: "boards-dev"
-    },
-    entities: [
-        _User
-    ],
-    autoSchemaSync: true,
-}).catch(error => console.log(error));
-
 debug('ts-express:server');
 
 const port = normalizePort(process.env.PORT || 3000);

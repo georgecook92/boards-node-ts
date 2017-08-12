@@ -11,7 +11,7 @@ export default class Password {
         return Bcrypt.hashSync(password, this.salt);
     }
 
-    public comparePassword(password, hash) {
+    public comparePassword(password, hash): boolean {
         return Bcrypt.compareSync(password, hash);
     }
 
